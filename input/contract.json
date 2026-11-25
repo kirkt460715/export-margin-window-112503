@@ -1,0 +1,132 @@
+{
+  "format": "jsonl",
+  "version": 1,
+  "tables": {
+    "orders": {
+      "summary": "初始报价、可修改履约约定与后续客户确认",
+      "columns": {
+        "id": "合同记录",
+        "order": "稳定订单",
+        "destination": "目的地",
+        "grade": "最低产品级别",
+        "quantity": "约定箱数",
+        "min_quantity": "能接受的最少箱数",
+        "min_arrival": "最早到港日",
+        "max_arrival": "最晚到港日",
+        "unit_usd": "每箱美元分",
+        "late_fee": "晚到每箱人民币分",
+        "consent": "客户明确同意的特殊调整或原约定",
+        "at": "获知时间"
+      },
+      "key": [
+        "id"
+      ],
+      "refs": {}
+    },
+    "lots": {
+      "summary": "可拆分货批、等级和备货成本",
+      "columns": {
+        "id": "货批",
+        "grade": "已证实等级",
+        "qty": "可用箱数",
+        "cents_per_box": "每箱人民币分成本",
+        "ready": "最早可用日",
+        "best_before": "最后可用日"
+      },
+      "key": [
+        "id"
+      ],
+      "refs": {}
+    },
+    "certs": {
+      "summary": "证书当前适用去向与转港限制，含补证所需时间",
+      "columns": {
+        "id": "证明",
+        "lot": "货批",
+        "destination": "允许目的地",
+        "port": "适用起运港",
+        "issue": "生效日",
+        "expire": "失效日",
+        "reissue_days": "重新签发所需最少天数",
+        "state": "有效或待补"
+      },
+      "key": [
+        "id"
+      ],
+      "refs": {
+        "lot": "lots.id"
+      }
+    },
+    "routes": {
+      "summary": "原计划和改期后的真实可用窗口",
+      "columns": {
+        "id": "航次版本",
+        "route": "实际承运线路",
+        "port": "起运港",
+        "destination": "目的地",
+        "depart": "实际装船日",
+        "arrival": "预计到港日",
+        "capacity": "总箱位",
+        "low_freight": "运费下界每箱分",
+        "high_freight": "运费上界每箱分",
+        "state": "线上状态",
+        "at": "运营方得知时间"
+      },
+      "key": [
+        "id"
+      ],
+      "refs": {}
+    },
+    "bookings": {
+      "summary": "已经保护的订舱和货批安排",
+      "columns": {
+        "id": "约定号",
+        "order": "客户订单",
+        "route": "采用时的航次记录",
+        "lot": "预留货批",
+        "qty": "承诺箱位",
+        "at": "记录时点",
+        "priority": "在本拼柜的保护顺序"
+      },
+      "key": [
+        "id"
+      ],
+      "refs": {
+        "route": "routes.id",
+        "lot": "lots.id"
+      }
+    },
+    "cash": {
+      "summary": "外币发票与入账、锁汇和退款的关系",
+      "columns": {
+        "id": "资金行",
+        "order": "所属客户订单",
+        "kind": "预测、入账、锁汇或退回",
+        "quote": "外币流水或原报价编号",
+        "usd": "金额美元分",
+        "fx": "已经锁定或实际的汇率，可空",
+        "at": "资料到达",
+        "from_id": "原资金凭据，可空"
+      },
+      "key": [
+        "id"
+      ],
+      "refs": {}
+    },
+    "fx": {
+      "summary": "财务给出的未锁定汇率范围",
+      "columns": {
+        "id": "报价",
+        "from_day": "适用起日",
+        "to_day": "适用末日",
+        "low": "下界",
+        "high": "上界",
+        "seen": "报价形成时间"
+      },
+      "key": [
+        "id"
+      ],
+      "refs": {}
+    }
+  }
+}
